@@ -1,0 +1,7 @@
+aiohttp
+html2text
+beautifulsoup4
+fastapi
+pydantic
+uvicorn
+aioredis
