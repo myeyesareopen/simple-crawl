@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  splash-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - splash-network
+
+  splash:
+    image: scrapinghub/splash
+    ports:
+      - "8050:8050"
+    depends_on:
+      - splash-redis
+    environment:
+      - SPLASH_PORT=8050
+    restart: always
+    networks:
+      - splash-network
+
+  splash-crawl:
+    image: crawl:latest
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - splash
+    networks:
+      - splash-network
+
+volumes:
+  redis-data:
+    driver: local
+
+networks:
+  splash-network:
+    driver: bridge
+
